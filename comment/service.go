@@ -5,8 +5,8 @@ import "mygram/comment/dto"
 type Service interface {
 	Get() ([]Comment, error)
 	Create(UserID int, req dto.CreateComment) (Comment, error)
-	Update(UserID int, CommentID int, req dto.UpdateComment) (Comment, error)
-	Delete(UserID int, CommentID int) (Comment, error)
+	Update(CommentID int, req dto.UpdateComment) (Comment, error)
+	Delete(CommentID int) (Comment, error)
 }
 
 type service struct {
@@ -33,9 +33,9 @@ func (s *service) Create(UserID int, req dto.CreateComment) (Comment, error) {
 	return NewPhoto, err
 }
 
-func (s *service) Update(UserID int, CommentID int, req dto.UpdateComment) (Comment, error) {
+func (s *service) Update(CommentID int, req dto.UpdateComment) (Comment, error) {
 
-	comment, err := s.repository.Find(UserID, CommentID)
+	comment, err := s.repository.Find(CommentID)
 
 	if err != nil {
 		return comment, err
@@ -47,9 +47,9 @@ func (s *service) Update(UserID int, CommentID int, req dto.UpdateComment) (Comm
 	return newComment, err
 }
 
-func (s *service) Delete(UserID int, CommentID int) (Comment, error) {
+func (s *service) Delete(CommentID int) (Comment, error) {
 
-	comment, err := s.repository.Find(UserID, CommentID)
+	comment, err := s.repository.Find(CommentID)
 	if err != nil {
 		return comment, err
 	}

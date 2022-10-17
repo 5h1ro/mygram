@@ -5,8 +5,8 @@ import "mygram/social_media/dto"
 type Service interface {
 	Get() ([]SocialMedia, error)
 	Create(UserID int, req dto.SocialMedia) (SocialMedia, error)
-	Update(UserID int, SocialMediaID int, req dto.SocialMedia) (SocialMedia, error)
-	Delete(UserID int, SocialMediaID int) (SocialMedia, error)
+	Update(SocialMediaID int, req dto.SocialMedia) (SocialMedia, error)
+	Delete(SocialMediaID int) (SocialMedia, error)
 }
 
 type service struct {
@@ -33,9 +33,9 @@ func (s *service) Create(UserID int, req dto.SocialMedia) (SocialMedia, error) {
 	return newSocialMedia, err
 }
 
-func (s *service) Update(UserID int, SocialMediaID int, req dto.SocialMedia) (SocialMedia, error) {
+func (s *service) Update(SocialMediaID int, req dto.SocialMedia) (SocialMedia, error) {
 
-	socialmedia, err := s.repository.Find(UserID, SocialMediaID)
+	socialmedia, err := s.repository.Find(SocialMediaID)
 
 	if err != nil {
 		return socialmedia, err
@@ -48,9 +48,9 @@ func (s *service) Update(UserID int, SocialMediaID int, req dto.SocialMedia) (So
 	return newSocialMedia, err
 }
 
-func (s *service) Delete(UserID int, SocialMediaID int) (SocialMedia, error) {
+func (s *service) Delete(SocialMediaID int) (SocialMedia, error) {
 
-	socialMedia, err := s.repository.Find(UserID, SocialMediaID)
+	socialMedia, err := s.repository.Find(SocialMediaID)
 	if err != nil {
 		return socialMedia, err
 	}

@@ -6,7 +6,7 @@ import (
 
 type Repository interface {
 	Get() ([]SocialMedia, error)
-	Find(UserID int, SocialMediaID int) (SocialMedia, error)
+	Find(SocialMediaID int) (SocialMedia, error)
 	Create(socialMedia SocialMedia) (SocialMedia, error)
 	Update(socialMedia SocialMedia) (SocialMedia, error)
 	Delete(socialMedia SocialMedia) (SocialMedia, error)
@@ -26,9 +26,9 @@ func (r repository) Get() ([]SocialMedia, error) {
 	return socialMedias, err
 }
 
-func (r repository) Find(UserID int, SocialMediaID int) (SocialMedia, error) {
+func (r repository) Find(SocialMediaID int) (SocialMedia, error) {
 	var socialMedia SocialMedia
-	err := r.db.Where("user_id = ?", UserID).First(&socialMedia, SocialMediaID).Error
+	err := r.db.First(&socialMedia, SocialMediaID).Error
 	return socialMedia, err
 }
 

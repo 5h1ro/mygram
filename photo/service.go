@@ -6,8 +6,8 @@ type Service interface {
 	Get() ([]Photo, error)
 	Find(PhotoID int) (Photo, error)
 	Create(UserID int, req dto.CreatePhoto) (Photo, error)
-	Update(UserID int, PhotoID int, req dto.UpdatePhoto) (Photo, error)
-	Delete(UserID int, PhotoID int) (Photo, error)
+	Update(PhotoID int, req dto.UpdatePhoto) (Photo, error)
+	Delete(PhotoID int) (Photo, error)
 }
 
 type service struct {
@@ -40,9 +40,9 @@ func (s *service) Create(UserID int, req dto.CreatePhoto) (Photo, error) {
 	return NewPhoto, err
 }
 
-func (s *service) Update(UserID int, PhotoID int, req dto.UpdatePhoto) (Photo, error) {
+func (s *service) Update(PhotoID int, req dto.UpdatePhoto) (Photo, error) {
 
-	photo, err := s.repository.FindSelf(UserID, PhotoID)
+	photo, err := s.repository.Find(PhotoID)
 
 	if err != nil {
 		return photo, err
@@ -56,9 +56,9 @@ func (s *service) Update(UserID int, PhotoID int, req dto.UpdatePhoto) (Photo, e
 	return newPhoto, err
 }
 
-func (s *service) Delete(UserID int, PhotoID int) (Photo, error) {
+func (s *service) Delete(PhotoID int) (Photo, error) {
 
-	photo, err := s.repository.FindSelf(UserID, PhotoID)
+	photo, err := s.repository.Find(PhotoID)
 	if err != nil {
 		return photo, err
 	}

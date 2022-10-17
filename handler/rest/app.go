@@ -61,7 +61,7 @@ func StartApp() {
 
 	mw := v1.Group("")
 	{
-		mw.Use(middleware.Middleware())
+		mw.Use(middleware.Authentication())
 	}
 
 	user := mw.Group("/users")
@@ -73,26 +73,29 @@ func StartApp() {
 
 	photo := mw.Group("/photos")
 	{
+		photo.Use(middleware.IsExistMiddleware())
 		photo.GET("", photoHandler.GetPhoto)
 		photo.POST("", photoHandler.CreatePhoto)
-		photo.PUT("/:photoId", photoHandler.UpdatePhoto)
-		photo.DELETE("/:photoId", photoHandler.DeletePhoto)
+		photo.PUT("/:photoId", middleware.PhotoAuthorization(), photoHandler.UpdatePhoto)
+		photo.DELETE("/:photoId", middleware.PhotoAuthorization(), photoHandler.DeletePhoto)
 	}
 
 	comment := mw.Group("/comments")
 	{
+		comment.Use(middleware.IsExistMiddleware())
 		comment.GET("", commentHandler.GetComment)
 		comment.POST("", commentHandler.CreateComment)
-		comment.PUT("/:commentId", commentHandler.UpdateComment)
-		comment.DELETE("/:commentId", commentHandler.DeleteComment)
+		comment.PUT("/:commentId", middleware.CommentAuthorization(), commentHandler.UpdateComment)
+		comment.DELETE("/:commentId", middleware.CommentAuthorization(), commentHandler.DeleteComment)
 	}
 
 	socialMedia := mw.Group("/socialmedias")
 	{
+		socialMedia.Use(middleware.IsExistMiddleware())
 		socialMedia.GET("", socialMediaHandler.GetSocialMedia)
 		socialMedia.POST("", socialMediaHandler.CreateSocialMedia)
-		socialMedia.PUT("/:socialMediaId", socialMediaHandler.UpdateSocialMedia)
-		socialMedia.DELETE("/:socialMediaId", socialMediaHandler.DeleteSocialMedia)
+		socialMedia.PUT("/:socialMediaId", middleware.SocialMediaAuthorization(), socialMediaHandler.UpdateSocialMedia)
+		socialMedia.DELETE("/:socialMediaId", middleware.SocialMediaAuthorization(), socialMediaHandler.DeleteSocialMedia)
 	}
 
 	fmt.Println("Server running on PORT =>", port)

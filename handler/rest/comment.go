@@ -38,13 +38,6 @@ func (cm *Comment) GetComment(c *gin.Context) {
 	ud := c.MustGet("userData").(jwt.MapClaims)
 
 	_, e := cm.userService.Find(int(ud["id"].(float64)))
-	if e != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "failed",
-			"error":  "Token invalid",
-		})
-		return
-	}
 
 	comments, errr := cm.commentService.Get()
 	if errr != nil {
@@ -129,15 +122,6 @@ func (cm *Comment) CreateComment(c *gin.Context) {
 
 	user := c.MustGet("userData").(jwt.MapClaims)
 
-	_, e := cm.userService.Find(int(user["id"].(float64)))
-	if e != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "failed",
-			"error":  "Token invalid",
-		})
-		return
-	}
-
 	var commentRequest dto.CreateComment
 
 	rules := govalidator.MapData{
@@ -206,17 +190,6 @@ func (cm *Comment) CreateComment(c *gin.Context) {
 // @Security ApiKeyAuth
 func (cm *Comment) UpdateComment(c *gin.Context) {
 
-	user := c.MustGet("userData").(jwt.MapClaims)
-
-	_, e := cm.userService.Find(int(user["id"].(float64)))
-	if e != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "failed",
-			"error":  "Token invalid",
-		})
-		return
-	}
-
 	var commentRequest dto.UpdateComment
 
 	rules := govalidator.MapData{
@@ -241,7 +214,7 @@ func (cm *Comment) UpdateComment(c *gin.Context) {
 	}
 
 	CommentID, _ := strconv.Atoi(c.Param("commentId"))
-	data, e := cm.commentService.Update(int(user["id"].(float64)), CommentID, commentRequest)
+	data, e := cm.commentService.Update(CommentID, commentRequest)
 
 	if e != nil {
 		if e.Error() != "" {
@@ -280,19 +253,8 @@ func (cm *Comment) UpdateComment(c *gin.Context) {
 // @Router /comments/{commentId} [delete]
 // @Security ApiKeyAuth
 func (cm *Comment) DeleteComment(c *gin.Context) {
-	user := c.MustGet("userData").(jwt.MapClaims)
-
-	_, err := cm.userService.Find(int(user["id"].(float64)))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "failed",
-			"error":  "Token invalid",
-		})
-		return
-	}
-
 	CommentID, _ := strconv.Atoi(c.Param("commentId"))
-	_, e := cm.commentService.Delete(int(user["id"].(float64)), CommentID)
+	_, e := cm.commentService.Delete(CommentID)
 	if e != nil {
 		if e.Error() != "" {
 			c.JSON(http.StatusBadRequest, gin.H{

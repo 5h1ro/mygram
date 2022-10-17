@@ -35,14 +35,7 @@ func (p *Photo) GetPhoto(c *gin.Context) {
 
 	ud := c.MustGet("userData").(jwt.MapClaims)
 
-	data, e := p.userService.Find(int(ud["id"].(float64)))
-	if e != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "failed",
-			"error":  "Token invalid",
-		})
-		return
-	}
+	data, _ := p.userService.Find(int(ud["id"].(float64)))
 
 	photos, e := p.photoService.Get()
 	if e != nil {
@@ -98,15 +91,6 @@ func (p *Photo) GetPhoto(c *gin.Context) {
 func (p *Photo) CreatePhoto(c *gin.Context) {
 
 	user := c.MustGet("userData").(jwt.MapClaims)
-
-	_, e := p.userService.Find(int(user["id"].(float64)))
-	if e != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "failed",
-			"error":  "Token invalid",
-		})
-		return
-	}
 
 	var photoRequest dto.CreatePhoto
 
@@ -166,17 +150,6 @@ func (p *Photo) CreatePhoto(c *gin.Context) {
 // @Security ApiKeyAuth
 func (p *Photo) UpdatePhoto(c *gin.Context) {
 
-	user := c.MustGet("userData").(jwt.MapClaims)
-
-	_, e := p.userService.Find(int(user["id"].(float64)))
-	if e != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "failed",
-			"error":  "Token invalid",
-		})
-		return
-	}
-
 	var photoRequest dto.UpdatePhoto
 
 	rules := govalidator.MapData{
@@ -203,7 +176,7 @@ func (p *Photo) UpdatePhoto(c *gin.Context) {
 	}
 
 	PhotoID, _ := strconv.Atoi(c.Param("photoId"))
-	data, e := p.photoService.Update(int(user["id"].(float64)), PhotoID, photoRequest)
+	data, e := p.photoService.Update(PhotoID, photoRequest)
 
 	if e != nil {
 		if e.Error() != "" {
@@ -219,6 +192,7 @@ func (p *Photo) UpdatePhoto(c *gin.Context) {
 		}
 		return
 	}
+
 	res := response.PhotoUpdateResponse{
 		ID:        data.ID,
 		Title:     data.Title,
@@ -227,8 +201,8 @@ func (p *Photo) UpdatePhoto(c *gin.Context) {
 		UserID:    data.UserID,
 		UpdatedAt: data.UpdatedAt,
 	}
-	c.JSON(
-		http.StatusOK, res)
+
+	c.JSON(http.StatusOK, res)
 }
 
 // DeletePhoto godoc
@@ -242,19 +216,8 @@ func (p *Photo) UpdatePhoto(c *gin.Context) {
 // @Router /photos/{photoId} [delete]
 // @Security ApiKeyAuth
 func (p *Photo) DeletePhoto(c *gin.Context) {
-	user := c.MustGet("userData").(jwt.MapClaims)
-
-	_, err := p.userService.Find(int(user["id"].(float64)))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "failed",
-			"error":  "Token invalid",
-		})
-		return
-	}
-
 	PhotoID, _ := strconv.Atoi(c.Param("photoId"))
-	_, e := p.photoService.Delete(int(user["id"].(float64)), PhotoID)
+	_, e := p.photoService.Delete(PhotoID)
 	if e != nil {
 		if e.Error() != "" {
 			c.JSON(http.StatusBadRequest, gin.H{

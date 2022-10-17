@@ -35,14 +35,7 @@ func (s *SocialMedia) GetSocialMedia(c *gin.Context) {
 
 	ud := c.MustGet("userData").(jwt.MapClaims)
 
-	data, e := s.userService.Find(int(ud["id"].(float64)))
-	if e != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "failed",
-			"error":  "Token invalid",
-		})
-		return
-	}
+	data, _ := s.userService.Find(int(ud["id"].(float64)))
 
 	socialMedias, e := s.socialMediaService.Get()
 	if e != nil {
@@ -99,15 +92,6 @@ func (s *SocialMedia) GetSocialMedia(c *gin.Context) {
 func (s *SocialMedia) CreateSocialMedia(c *gin.Context) {
 
 	user := c.MustGet("userData").(jwt.MapClaims)
-
-	_, e := s.userService.Find(int(user["id"].(float64)))
-	if e != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "failed",
-			"error":  "Token invalid",
-		})
-		return
-	}
 
 	var socialMediaRequest dto.SocialMedia
 
@@ -167,17 +151,6 @@ func (s *SocialMedia) CreateSocialMedia(c *gin.Context) {
 // @Security ApiKeyAuth
 func (s *SocialMedia) UpdateSocialMedia(c *gin.Context) {
 
-	user := c.MustGet("userData").(jwt.MapClaims)
-
-	_, e := s.userService.Find(int(user["id"].(float64)))
-	if e != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "failed",
-			"error":  "Token invalid",
-		})
-		return
-	}
-
 	var socialMediaRequest dto.SocialMedia
 
 	rules := govalidator.MapData{
@@ -203,7 +176,7 @@ func (s *SocialMedia) UpdateSocialMedia(c *gin.Context) {
 	}
 
 	SocialMediaID, _ := strconv.Atoi(c.Param("socialMediaId"))
-	data, e := s.socialMediaService.Update(int(user["id"].(float64)), SocialMediaID, socialMediaRequest)
+	data, e := s.socialMediaService.Update(SocialMediaID, socialMediaRequest)
 
 	if e != nil {
 		if e.Error() != "" {
@@ -241,19 +214,8 @@ func (s *SocialMedia) UpdateSocialMedia(c *gin.Context) {
 // @Router /socialmedias/{socialMediaId} [delete]
 // @Security ApiKeyAuth
 func (s *SocialMedia) DeleteSocialMedia(c *gin.Context) {
-	user := c.MustGet("userData").(jwt.MapClaims)
-
-	_, err := s.userService.Find(int(user["id"].(float64)))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "failed",
-			"error":  "Token invalid",
-		})
-		return
-	}
-
 	SocialMediaID, _ := strconv.Atoi(c.Param("socialMediaId"))
-	_, e := s.socialMediaService.Delete(int(user["id"].(float64)), SocialMediaID)
+	_, e := s.socialMediaService.Delete(SocialMediaID)
 	if e != nil {
 		if e.Error() != "" {
 			c.JSON(http.StatusBadRequest, gin.H{

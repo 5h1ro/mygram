@@ -7,7 +7,6 @@ import (
 type Repository interface {
 	Get() ([]Photo, error)
 	Find(PhotoID int) (Photo, error)
-	FindSelf(UserID int, PhotoID int) (Photo, error)
 	Create(photo Photo) (Photo, error)
 	Update(photo Photo) (Photo, error)
 	Delete(photo Photo) (Photo, error)
@@ -30,12 +29,6 @@ func (r repository) Get() ([]Photo, error) {
 func (r repository) Find(PhotoID int) (Photo, error) {
 	var photo Photo
 	err := r.db.First(&photo, PhotoID).Error
-	return photo, err
-}
-
-func (r repository) FindSelf(UserID int, PhotoID int) (Photo, error) {
-	var photo Photo
-	err := r.db.Where("user_id = ?", UserID).First(&photo, PhotoID).Error
 	return photo, err
 }
 
