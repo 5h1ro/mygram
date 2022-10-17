@@ -1,0 +1,676 @@
+definitions:
+  dto.CreateComment:
+    properties:
+      message:
+        example: Nice pict
+        type: string
+      photo_id:
+        example: 1
+        type: integer
+    type: object
+  dto.CreatePhoto:
+    properties:
+      caption:
+        example: This is my first photo
+        type: string
+      photo_url:
+        example: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSm1HbGcLg0JpQF8teAsREF9tqJH9FmpODS3FTfNZOk&s
+        type: string
+      title:
+        example: First
+        type: string
+    type: object
+  dto.CreateUser:
+    properties:
+      age:
+        example: 10
+        type: integer
+      email:
+        example: admin@admin.com
+        type: string
+      password:
+        example: password
+        type: string
+      username:
+        example: Nurhakiki
+        type: string
+    type: object
+  dto.LoginUser:
+    properties:
+      email:
+        example: admin@admin.com
+        type: string
+      password:
+        example: password
+        type: string
+    type: object
+  dto.SocialMedia:
+    properties:
+      name:
+        example: nurhakiki
+        type: string
+      social_media_url:
+        example: https://www.instagram.com/nur.hqq_/
+        type: string
+    type: object
+  dto.UpdateComment:
+    properties:
+      message:
+        example: Good picture
+        type: string
+    type: object
+  dto.UpdatePhoto:
+    properties:
+      caption:
+        example: This is my second photo
+        type: string
+      photo_url:
+        example: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSm1HbGcLg0JpQF8teAsREF9tqJH9FmpODS3FTfNZOk&s
+        type: string
+      title:
+        example: Second
+        type: string
+    type: object
+  dto.UpdateUser:
+    properties:
+      email:
+        example: nurhakiki.ri@gmail.com
+        type: string
+      username:
+        example: nur.hqq_
+        type: string
+    type: object
+  response.CommentCreateResponse:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      message:
+        type: string
+      photo_id:
+        type: integer
+      user_id:
+        type: integer
+    type: object
+  response.CommentDeleteResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  response.CommentPhotoResponse:
+    properties:
+      caption:
+        type: string
+      id:
+        type: integer
+      photo_url:
+        type: string
+      title:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  response.CommentResponse:
+    properties:
+      Photo:
+        $ref: '#/definitions/response.CommentPhotoResponse'
+      User:
+        $ref: '#/definitions/response.CommentUserResponse'
+      created_at:
+        type: string
+      id:
+        type: integer
+      message:
+        type: string
+      photo_id:
+        type: integer
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  response.CommentUpdateResponse:
+    properties:
+      id:
+        type: integer
+      message:
+        type: string
+      photo_id:
+        type: integer
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  response.CommentUserResponse:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      username:
+        type: string
+    type: object
+  response.PhotoCreateResponse:
+    properties:
+      caption:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      photo_url:
+        type: string
+      title:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  response.PhotoDeleteResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  response.PhotoResponse:
+    properties:
+      User:
+        $ref: '#/definitions/user.Response'
+      caption:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      photo_url:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  response.PhotoUpdateResponse:
+    properties:
+      caption:
+        type: string
+      id:
+        type: integer
+      photo_url:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  response.SocialMediaCreateResponse:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      social_media_url:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  response.SocialMediaDeleteResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  response.SocialMediaResponse:
+    properties:
+      User:
+        $ref: '#/definitions/response.SocialMediaUserResponse'
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      social_media_url:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  response.SocialMediaUpdateResponse:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      social_media_url:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  response.SocialMediaUserResponse:
+    properties:
+      id:
+        type: integer
+      username:
+        type: string
+    type: object
+  user.DeleteResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  user.LoginResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  user.RegisterResponse:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      id:
+        type: integer
+      username:
+        type: string
+    type: object
+  user.Response:
+    properties:
+      email:
+        type: string
+      username:
+        type: string
+    type: object
+  user.UpdateResponse:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      id:
+        type: integer
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /comments:
+    get:
+      consumes:
+      - application/json
+      description: Get comment
+      operationId: get-comment
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/response.CommentResponse'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - comments
+    post:
+      consumes:
+      - application/json
+      description: Create comment
+      operationId: create-comment
+      parameters:
+      - description: request body json
+        in: body
+        name: RequestBody
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateComment'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.CommentCreateResponse'
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - comments
+  /comments/{commentId}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete comment
+      operationId: delete-comment
+      parameters:
+      - description: comment id
+        in: path
+        name: commentId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.CommentDeleteResponse'
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - comments
+    put:
+      consumes:
+      - application/json
+      description: Update comment
+      operationId: update-comment
+      parameters:
+      - description: comment id
+        in: path
+        name: commentId
+        required: true
+        type: integer
+      - description: request body json
+        in: body
+        name: RequestBody
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateComment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.CommentUpdateResponse'
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - comments
+  /photos:
+    get:
+      consumes:
+      - application/json
+      description: Get photo
+      operationId: get-photo
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/response.PhotoResponse'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - photos
+    post:
+      consumes:
+      - application/json
+      description: Create photo
+      operationId: create-photo
+      parameters:
+      - description: request body json
+        in: body
+        name: RequestBody
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreatePhoto'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.PhotoCreateResponse'
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - photos
+  /photos/{photoId}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete photo
+      operationId: delete-photo
+      parameters:
+      - description: photo id
+        in: path
+        name: photoId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PhotoDeleteResponse'
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - photos
+    put:
+      consumes:
+      - application/json
+      description: Update photo
+      operationId: update-photo
+      parameters:
+      - description: photo id
+        in: path
+        name: photoId
+        required: true
+        type: integer
+      - description: request body json
+        in: body
+        name: RequestBody
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdatePhoto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PhotoUpdateResponse'
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - photos
+  /socialmedias:
+    get:
+      consumes:
+      - application/json
+      description: Get social media
+      operationId: get-social-media
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/response.SocialMediaResponse'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - socialmedias
+    post:
+      consumes:
+      - application/json
+      description: Create social media
+      operationId: create-social-media
+      parameters:
+      - description: request body json
+        in: body
+        name: RequestBody
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SocialMedia'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.SocialMediaCreateResponse'
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - socialmedias
+  /socialmedias/{socialMediaId}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete social media
+      operationId: delete-social-media
+      parameters:
+      - description: social media id
+        in: path
+        name: socialMediaId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.SocialMediaDeleteResponse'
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - socialmedias
+    put:
+      consumes:
+      - application/json
+      description: Update social media
+      operationId: update-social-media
+      parameters:
+      - description: social media id
+        in: path
+        name: socialMediaId
+        required: true
+        type: integer
+      - description: request body json
+        in: body
+        name: RequestBody
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SocialMedia'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.SocialMediaUpdateResponse'
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - socialmedias
+  /users:
+    delete:
+      consumes:
+      - application/json
+      description: Delete user
+      operationId: delete-user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.DeleteResponse'
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: Update user
+      operationId: update-user
+      parameters:
+      - description: request body json
+        in: body
+        name: RequestBody
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.UpdateResponse'
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - users
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: Login user
+      operationId: login
+      parameters:
+      - description: request body json
+        in: body
+        name: RequestBody
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.LoginResponse'
+      tags:
+      - users
+  /users/register:
+    post:
+      consumes:
+      - application/json
+      description: Register user
+      operationId: register
+      parameters:
+      - description: request body json
+        in: body
+        name: RequestBody
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateUser'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/user.RegisterResponse'
+      tags:
+      - users
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
